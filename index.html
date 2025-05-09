@@ -273,7 +273,7 @@
     </header>
     
     <div class="container">
-        <!-- Home Page -->
+        
         <div id="home-page">
             <div id="welcome-message" class="welcome-message hidden">
                 <h2>Welcome back, <span id="username-display"></span>!</h2>
@@ -290,13 +290,13 @@
             </div>
             
             <div id="posts-feed" class="posts-feed">
-                <!-- Posts will be dynamically inserted here -->
+                
             </div>
         </div>
         
-        <!-- Auth Forms -->
+        
         <div id="auth-forms" class="auth-forms">
-            <!-- Login Form -->
+            
             <div id="login-form-container" class="form-container">
                 <h2>Login</h2>
                 <form id="login-form">
@@ -312,7 +312,7 @@
                 </form>
             </div>
             
-            <!-- Register Form -->
+            
             <div id="register-form-container" class="form-container">
                 <h2>Register</h2>
                 <form id="register-form">
@@ -333,7 +333,7 @@
             </div>
         </div>
         
-        <!-- Profile Page -->
+        
         <div id="profile-page" class="hidden">
             <div class="user-info">
                 <div class="user-avatar" id="profile-avatar">U</div>
@@ -345,18 +345,18 @@
             
             <h3>Your Posts</h3>
             <div id="user-posts" class="posts-feed">
-                <!-- User's posts will be dynamically inserted here -->
+                
             </div>
         </div>
     </div>
     
     <script>
-        // Sample data storage (in a real app, this would be a backend database)
+        
         let users = JSON.parse(localStorage.getItem('forumUsers')) || [];
         let posts = JSON.parse(localStorage.getItem('forumPosts')) || [];
         let currentUser = JSON.parse(localStorage.getItem('forumCurrentUser')) || null;
         
-        // DOM Elements
+        
         const homePage = document.getElementById('home-page');
         const authForms = document.getElementById('auth-forms');
         const profilePage = document.getElementById('profile-page');
@@ -372,17 +372,17 @@
         const profileUsername = document.getElementById('profile-username');
         const joinDate = document.getElementById('join-date');
         
-        // Navigation links
+        
         const homeLink = document.getElementById('home-link');
         const loginLink = document.getElementById('login-link');
         const registerLink = document.getElementById('register-link');
         const profileLink = document.getElementById('profile-link');
         const logoutLink = document.getElementById('logout-link');
         
-        // Initialize the UI based on login state
+        
         function initUI() {
             if (currentUser) {
-                // User is logged in
+                
                 authForms.classList.add('hidden');
                 homePage.classList.remove('hidden');
                 welcomeMessage.classList.remove('hidden');
@@ -397,7 +397,7 @@
                 loginLink.classList.add('hidden');
                 registerLink.classList.add('hidden');
             } else {
-                // User is not logged in
+                
                 authForms.classList.remove('hidden');
                 homePage.classList.remove('hidden');
                 profilePage.classList.add('hidden');
@@ -413,7 +413,7 @@
             renderPosts();
         }
         
-        // Render all posts
+        
         function renderPosts() {
             postsFeed.innerHTML = '';
             userPosts.innerHTML = '';
@@ -429,7 +429,7 @@
             });
         }
         
-        // Create a post element
+       
         function createPostElement(post) {
             const postElement = document.createElement('div');
             postElement.className = 'post';
@@ -471,7 +471,7 @@
             postElement.appendChild(postContent);
             postElement.appendChild(postActions);
             
-            // Add replies if they exist
+            
             if (post.replies && post.replies.length > 0) {
                 const repliesContainer = document.createElement('div');
                 repliesContainer.className = 'replies';
@@ -512,7 +512,7 @@
                 postElement.appendChild(repliesContainer);
             }
             
-            // Add reply form (hidden by default)
+            
             const replyForm = document.createElement('div');
             replyForm.className = 'reply-form hidden';
             replyForm.dataset.postId = post.id;
@@ -534,7 +534,7 @@
             return postElement;
         }
         
-        // Toggle reply form visibility
+        
         function toggleReplyForm(postId) {
             if (!currentUser) {
                 alert('Please login to reply to posts');
@@ -545,7 +545,7 @@
             replyForm.classList.toggle('hidden');
         }
         
-        // Submit a reply to a post
+        
         function submitReply(postId, textarea) {
             const content = textarea.value.trim();
             if (!content) return;
@@ -571,7 +571,7 @@
             renderPosts();
         }
         
-        // Event Listeners
+        
         homeLink.addEventListener('click', (e) => {
             e.preventDefault();
             homePage.classList.remove('hidden');
@@ -683,7 +683,7 @@
             renderPosts();
         });
         
-        // Initialize the app
+        
         initUI();
     </script>
 </body>
