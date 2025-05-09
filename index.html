@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Forum</title>
+    <style>
+        :root {
+            --primary: #4285f4;
+            --secondary: #34a853;
+            --accent: #ea4335;
+            --light: #f8f9fa;
+            --dark: #202124;
+            --gray: #5f6368;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .auth-forms {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .form-container h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #3367d6;
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .post-form {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .post-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            min-height: 100px;
+            resize: vertical;
+            margin-bottom: 1rem;
+        }
+        
+        .posts-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .post {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-weight: bold;
+        }
+        
+        .post-author {
+            font-weight: bold;
+        }
+        
+        .post-time {
+            color: var(--gray);
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        
+        .post-content {
+            margin-bottom: 1rem;
+            white-space: pre-wrap;
+        }
+        
+        .post-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .reply-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .reply-form {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .replies {
+            margin-top: 1.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid #eee;
+        }
+        
+        .reply {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .welcome-message {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Community Forum</div>
+        <nav>
+            <ul>
+                <li><a href="#" id="home-link">Home</a></li>
+                <li><a href="#" id="login-link">Login</a></li>
+                <li><a href="#" id="register-link">Register</a></li>
+                <li><a href="#" id="profile-link" class="hidden">Profile</a></li>
+                <li><a href="#" id="logout-link" class="hidden">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <!-- Home Page -->
+        <div id="home-page">
+            <div id="welcome-message" class="welcome-message hidden">
+                <h2>Welcome back, <span id="username-display"></span>!</h2>
+            </div>
+            
+            <div id="post-form-container" class="post-form hidden">
+                <h2>Create a new post</h2>
+                <form id="post-form">
+                    <div class="form-group">
+                        <textarea id="post-content" placeholder="What's on your mind?" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-block">Post</button>
+                </form>
+            </div>
+            
+            <div id="posts-feed" class="posts-feed">
+                <!-- Posts will be dynamically inserted here -->
+            </div>
+        </div>
+        
+        <!-- Auth Forms -->
+        <div id="auth-forms" class="auth-forms">
+            <!-- Login Form -->
+            <div id="login-form-container" class="form-container">
+                <h2>Login</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-username">Username</label>
+                        <input type="text" id="login-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-block">Login</button>
+                </form>
+            </div>
+            
+            <!-- Register Form -->
+            <div id="register-form-container" class="form-container">
+                <h2>Register</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label for="register-username">Username</label>
+                        <input type="text" id="register-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm-password">Confirm Password</label>
+                        <input type="password" id="register-confirm-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-block">Register</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Profile Page -->
+        <div id="profile-page" class="hidden">
+            <div class="user-info">
+                <div class="user-avatar" id="profile-avatar">U</div>
+                <div>
+                    <h2 id="profile-username">Username</h2>
+                    <p>Member since <span id="join-date">2023</span></p>
+                </div>
+            </div>
+            
+            <h3>Your Posts</h3>
+            <div id="user-posts" class="posts-feed">
+                <!-- User's posts will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Sample data storage (in a real app, this would be a backend database)
+        let users = JSON.parse(localStorage.getItem('forumUsers')) || [];
+        let posts = JSON.parse(localStorage.getItem('forumPosts')) || [];
+        let currentUser = JSON.parse(localStorage.getItem('forumCurrentUser')) || null;
+        
+        // DOM Elements
+        const homePage = document.getElementById('home-page');
+        const authForms = document.getElementById('auth-forms');
+        const profilePage = document.getElementById('profile-page');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const postForm = document.getElementById('post-form');
+        const postsFeed = document.getElementById('posts-feed');
+        const userPosts = document.getElementById('user-posts');
+        const welcomeMessage = document.getElementById('welcome-message');
+        const usernameDisplay = document.getElementById('username-display');
+        const postFormContainer = document.getElementById('post-form-container');
+        const profileAvatar = document.getElementById('profile-avatar');
+        const profileUsername = document.getElementById('profile-username');
+        const joinDate = document.getElementById('join-date');
+        
+        // Navigation links
+        const homeLink = document.getElementById('home-link');
+        const loginLink = document.getElementById('login-link');
+        const registerLink = document.getElementById('register-link');
+        const profileLink = document.getElementById('profile-link');
+        const logoutLink = document.getElementById('logout-link');
+        
+        // Initialize the UI based on login state
+        function initUI() {
+            if (currentUser) {
+                // User is logged in
+                authForms.classList.add('hidden');
+                homePage.classList.remove('hidden');
+                welcomeMessage.classList.remove('hidden');
+                postFormContainer.classList.remove('hidden');
+                profileLink.classList.remove('hidden');
+                logoutLink.classList.remove('hidden');
+                
+                usernameDisplay.textContent = currentUser.username;
+                profileUsername.textContent = currentUser.username;
+                profileAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+                
+                loginLink.classList.add('hidden');
+                registerLink.classList.add('hidden');
+            } else {
+                // User is not logged in
+                authForms.classList.remove('hidden');
+                homePage.classList.remove('hidden');
+                profilePage.classList.add('hidden');
+                welcomeMessage.classList.add('hidden');
+                postFormContainer.classList.add('hidden');
+                profileLink.classList.add('hidden');
+                logoutLink.classList.add('hidden');
+                
+                loginLink.classList.remove('hidden');
+                registerLink.classList.remove('hidden');
+            }
+            
+            renderPosts();
+        }
+        
+        // Render all posts
+        function renderPosts() {
+            postsFeed.innerHTML = '';
+            userPosts.innerHTML = '';
+            
+            posts.forEach(post => {
+                const postElement = createPostElement(post);
+                postsFeed.appendChild(postElement);
+                
+                if (currentUser && post.author === currentUser.username) {
+                    const userPostElement = createPostElement(post);
+                    userPosts.appendChild(userPostElement);
+                }
+            });
+        }
+        
+        // Create a post element
+        function createPostElement(post) {
+            const postElement = document.createElement('div');
+            postElement.className = 'post';
+            postElement.dataset.postId = post.id;
+            
+            const postHeader = document.createElement('div');
+            postHeader.className = 'post-header';
+            
+            const postAvatar = document.createElement('div');
+            postAvatar.className = 'post-avatar';
+            postAvatar.textContent = post.author.charAt(0).toUpperCase();
+            
+            const postAuthor = document.createElement('span');
+            postAuthor.className = 'post-author';
+            postAuthor.textContent = post.author;
+            
+            const postTime = document.createElement('span');
+            postTime.className = 'post-time';
+            postTime.textContent = new Date(post.timestamp).toLocaleString();
+            
+            const postContent = document.createElement('div');
+            postContent.className = 'post-content';
+            postContent.textContent = post.content;
+            
+            const postActions = document.createElement('div');
+            postActions.className = 'post-actions';
+            
+            const replyBtn = document.createElement('button');
+            replyBtn.className = 'reply-btn';
+            replyBtn.textContent = 'Reply';
+            replyBtn.addEventListener('click', () => toggleReplyForm(post.id));
+            
+            postHeader.appendChild(postAvatar);
+            postHeader.appendChild(postAuthor);
+            postHeader.appendChild(postTime);
+            postActions.appendChild(replyBtn);
+            
+            postElement.appendChild(postHeader);
+            postElement.appendChild(postContent);
+            postElement.appendChild(postActions);
+            
+            // Add replies if they exist
+            if (post.replies && post.replies.length > 0) {
+                const repliesContainer = document.createElement('div');
+                repliesContainer.className = 'replies';
+                
+                post.replies.forEach(reply => {
+                    const replyElement = document.createElement('div');
+                    replyElement.className = 'reply';
+                    
+                    const replyHeader = document.createElement('div');
+                    replyHeader.className = 'post-header';
+                    
+                    const replyAvatar = document.createElement('div');
+                    replyAvatar.className = 'post-avatar';
+                    replyAvatar.textContent = reply.author.charAt(0).toUpperCase();
+                    
+                    const replyAuthor = document.createElement('span');
+                    replyAuthor.className = 'post-author';
+                    replyAuthor.textContent = reply.author;
+                    
+                    const replyTime = document.createElement('span');
+                    replyTime.className = 'post-time';
+                    replyTime.textContent = new Date(reply.timestamp).toLocaleString();
+                    
+                    const replyContent = document.createElement('div');
+                    replyContent.className = 'post-content';
+                    replyContent.textContent = reply.content;
+                    
+                    replyHeader.appendChild(replyAvatar);
+                    replyHeader.appendChild(replyAuthor);
+                    replyHeader.appendChild(replyTime);
+                    
+                    replyElement.appendChild(replyHeader);
+                    replyElement.appendChild(replyContent);
+                    
+                    repliesContainer.appendChild(replyElement);
+                });
+                
+                postElement.appendChild(repliesContainer);
+            }
+            
+            // Add reply form (hidden by default)
+            const replyForm = document.createElement('div');
+            replyForm.className = 'reply-form hidden';
+            replyForm.dataset.postId = post.id;
+            
+            const replyTextarea = document.createElement('textarea');
+            replyTextarea.placeholder = 'Write your reply...';
+            replyTextarea.required = true;
+            
+            const replySubmitBtn = document.createElement('button');
+            replySubmitBtn.type = 'button';
+            replySubmitBtn.className = 'btn';
+            replySubmitBtn.textContent = 'Post Reply';
+            replySubmitBtn.addEventListener('click', () => submitReply(post.id, replyTextarea));
+            
+            replyForm.appendChild(replyTextarea);
+            replyForm.appendChild(replySubmitBtn);
+            postElement.appendChild(replyForm);
+            
+            return postElement;
+        }
+        
+        // Toggle reply form visibility
+        function toggleReplyForm(postId) {
+            if (!currentUser) {
+                alert('Please login to reply to posts');
+                return;
+            }
+            
+            const replyForm = document.querySelector(`.reply-form[data-post-id="${postId}"]`);
+            replyForm.classList.toggle('hidden');
+        }
+        
+        // Submit a reply to a post
+        function submitReply(postId, textarea) {
+            const content = textarea.value.trim();
+            if (!content) return;
+            
+            const postIndex = posts.findIndex(post => post.id === postId);
+            if (postIndex === -1) return;
+            
+            const reply = {
+                id: Date.now().toString(),
+                author: currentUser.username,
+                content: content,
+                timestamp: Date.now()
+            };
+            
+            if (!posts[postIndex].replies) {
+                posts[postIndex].replies = [];
+            }
+            
+            posts[postIndex].replies.push(reply);
+            localStorage.setItem('forumPosts', JSON.stringify(posts));
+            
+            textarea.value = '';
+            renderPosts();
+        }
+        
+        // Event Listeners
+        homeLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            homePage.classList.remove('hidden');
+            authForms.classList.add('hidden');
+            profilePage.classList.add('hidden');
+        });
+        
+        loginLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            homePage.classList.add('hidden');
+            authForms.classList.remove('hidden');
+            profilePage.classList.add('hidden');
+            document.getElementById('login-form-container').classList.remove('hidden');
+            document.getElementById('register-form-container').classList.add('hidden');
+        });
+        
+        registerLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            homePage.classList.add('hidden');
+            authForms.classList.remove('hidden');
+            profilePage.classList.add('hidden');
+            document.getElementById('login-form-container').classList.add('hidden');
+            document.getElementById('register-form-container').classList.remove('hidden');
+        });
+        
+        profileLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            homePage.classList.add('hidden');
+            authForms.classList.add('hidden');
+            profilePage.classList.remove('hidden');
+        });
+        
+        logoutLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            currentUser = null;
+            localStorage.removeItem('forumCurrentUser');
+            initUI();
+        });
+        
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            
+            const user = users.find(u => u.username === username && u.password === password);
+            if (user) {
+                currentUser = { username: user.username };
+                localStorage.setItem('forumCurrentUser', JSON.stringify(currentUser));
+                initUI();
+                document.getElementById('login-username').value = '';
+                document.getElementById('login-password').value = '';
+            } else {
+                alert('Invalid username or password');
+            }
+        });
+        
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('register-username').value.trim();
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+            
+            if (users.some(u => u.username === username)) {
+                alert('Username already exists');
+                return;
+            }
+            
+            const newUser = {
+                username,
+                password,
+                joinDate: Date.now()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('forumUsers', JSON.stringify(users));
+            
+            currentUser = { username };
+            localStorage.setItem('forumCurrentUser', JSON.stringify(currentUser));
+            
+            document.getElementById('register-username').value = '';
+            document.getElementById('register-password').value = '';
+            document.getElementById('register-confirm-password').value = '';
+            
+            initUI();
+        });
+        
+        postForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const content = document.getElementById('post-content').value.trim();
+            if (!content) return;
+            
+            const newPost = {
+                id: Date.now().toString(),
+                author: currentUser.username,
+                content: content,
+                timestamp: Date.now(),
+                replies: []
+            };
+            
+            posts.unshift(newPost);
+            localStorage.setItem('forumPosts', JSON.stringify(posts));
+            
+            document.getElementById('post-content').value = '';
+            renderPosts();
+        });
+        
+        // Initialize the app
+        initUI();
+    </script>
+</body>
+</html>
